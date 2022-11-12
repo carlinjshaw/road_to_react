@@ -1,22 +1,55 @@
-import logo from './logo.svg';
+// import logo from './logo.svg';
 import './App.css';
 
 function App() {
-const myList = [1,2,3,4]
-let counter = -1;
-
+  
   return (
     <div>
-      <h1>Hello World!!</h1>
-      
-      <ul>
-        {myList.map(function (item) {
-          counter ++;
-          return <li key = {counter}>{item}</li>
-        })}
-      </ul>
+      <h1>My Hacker stories</h1>
+      <Search />
+
+      <hr />
+      <List />
     </div>
   );
+}
+
+function List() {
+  const myList = [
+    {
+      title: 'React',
+      url: 'https://reactjs.org',
+      author: 'Jordan Walke',
+      num_comments: 3,
+      points: 4,
+      objectID: 0,
+    },
+    {
+      title: 'Redux',
+      url: 'https://redux.js.org/',
+      author: 'Dan Abramov, Andrew Clark',
+      num_comments: 2,
+      points: 5,
+      objectID: 1,
+    }
+  ]
+  // const myList = [1,2,3,4]
+  return (
+    <ul>
+        {myList.map(function (item) {
+          return <li key = {item.objectID}>{item.title}</li>
+        })}
+    </ul>
+  )
+}
+
+function Search() {
+  return(
+    <div>
+      <label htmlFor = "search">Search: </label>
+      <input id= "search" type = "text"/>
+    </div>
+  )
 }
 
 export default App;
