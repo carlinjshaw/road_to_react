@@ -1,5 +1,6 @@
 // import logo from './logo.svg';
 import './App.css';
+import * as React from 'react';
 
 const App = () => {
   const stories = [
@@ -56,17 +57,26 @@ const Item = (props) => (
 )
 
 const Search = () => {
+  const [searchTerm, setSearchTerm] = React.useState('');
+
   const handleChange = (event) => {
     //synthetic event
-    console.log(event);
+    // console.log(event);
     //value of target: (here: element)
-    console.log(event.target.value);
+    // console.log(event.target.value);
+
+    setSearchTerm(event.target.value)
   }
 
   return(
     <div>
       <label htmlFor = "search">Search: </label>
       <input id= "search" type = "text" onChange= {handleChange}/>
+
+      <p>
+        Searching for <strong>{searchTerm}</strong>
+      </p>
+
     </div>
   )
 }
