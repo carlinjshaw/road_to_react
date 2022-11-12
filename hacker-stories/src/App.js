@@ -1,21 +1,8 @@
 // import logo from './logo.svg';
 import './App.css';
 
-function App() {
-  
-  return (
-    <div>
-      <h1>My Hacker stories</h1>
-      <Search />
-
-      <hr />
-      <List />
-    </div>
-  );
-}
-
-function List() {
-  const myList = [
+const App = () => {
+  const stories = [
     {
       title: 'React',
       url: 'https://reactjs.org',
@@ -33,21 +20,53 @@ function List() {
       objectID: 1,
     }
   ]
+  
+  return (
+    <div>
+      <h1>My Hacker stories</h1>
+      <Search />
+
+      <hr />
+      <List list = {stories}/>
+    </div>
+  );
+}
+
+const List = (props) => {
+  
   // const myList = [1,2,3,4]
   return (
     <ul>
-        {myList.map(function (item) {
-          return <li key = {item.objectID}>{item.title}</li>
+        {props.list.map((item) => {
+          return <Item key = {item.objectID} item = {item}/>
         })}
     </ul>
   )
 }
 
-function Search() {
+const Item = (props) => (
+  <li>
+    <span>
+      <a href = {props.item.url}> {props.item.title}</a>
+    </span>
+    <span> {props.item.author}</span>
+    <span> {props.item.num_contents}</span>
+    <span> {props.item.points}</span>
+  </li>
+)
+
+const Search = () => {
+  const handleChange = (event) => {
+    //synthetic event
+    console.log(event);
+    //value of target: (here: element)
+    console.log(event.target.value);
+  }
+
   return(
     <div>
       <label htmlFor = "search">Search: </label>
-      <input id= "search" type = "text"/>
+      <input id= "search" type = "text" onChange= {handleChange}/>
     </div>
   )
 }
