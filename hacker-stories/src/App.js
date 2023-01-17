@@ -21,17 +21,30 @@ const App = () => {
       objectID: 1,
     }
   ]
-  
+  //A
+  const [searchTerm, setSearchTerm] = React.useState('');
+
+  const handleSearch = (event) => {
+    //D
+    // console.log(event.target.value)
+    setSearchTerm(event.target.value)
+  }
+
+  const searchedStories = stories.filter((story) => 
+    story.title.toLowerCase().includes(searchTerm.toLowerCase())
+  )
+
   return (
     <div>
       <h1>My Hacker stories</h1>
-      <Search />
+      <Search onSearch={handleSearch}/>
 
       <hr />
-      <List list = {stories}/>
+      <List list = {searchedStories}/>
     </div>
   );
 }
+
 
 const List = (props) => {
   
@@ -56,29 +69,24 @@ const Item = (props) => (
   </li>
 )
 
-const Search = () => {
-  const [searchTerm, setSearchTerm] = React.useState('');
+const Search = (props) => (
+<div>
+  <label htmlFor = "search">Search: </label>
+  <input id= "search" type = "text" onChange= {props.onSearch}/>
 
-  const handleChange = (event) => {
-    //synthetic event
-    // console.log(event);
-    //value of target: (here: element)
-    // console.log(event.target.value);
+  {/* <p>
+    Searching for <strong>{searchTerm}</strong>
+  </p> */}
 
-    setSearchTerm(event.target.value)
-  }
+</div>
+)
 
-  return(
-    <div>
-      <label htmlFor = "search">Search: </label>
-      <input id= "search" type = "text" onChange= {handleChange}/>
+  // const handleChange = (event) => {
+  //   setSearchTerm(event.target.value)
+  //   props.onSearch(event)
+  // }
 
-      <p>
-        Searching for <strong>{searchTerm}</strong>
-      </p>
-
-    </div>
-  )
-}
+  // return(
+// }
 
 export default App;
