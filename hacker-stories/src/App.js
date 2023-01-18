@@ -48,6 +48,13 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
   return (
     <div>
       <h1>My Hacker stories</h1>
+      <InputWithLabel
+        id="search"
+        label="Search"
+        value={searchTerm}
+        onInputChange={handleSearch}
+      />
+
       <Search search = {searchTerm} onSearch={handleSearch}/>
 
       <hr />
@@ -56,6 +63,18 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
   );
 }
 
+const InputWithLabel = ({id, label, value, type='text', onInputChange}) => (
+  <>
+    <label htmlFor={id}>{label}</label>
+    &nbsp;
+    <input
+      id={id}
+      type={type}
+      value={value}
+      onChange={onInputChange}
+    />
+  </>
+)
 
 const List = ({list}) => {
   
@@ -81,7 +100,7 @@ const Item = ({url,title, author, num_contents, points}) => (
 )
 
 const Search = ({search, onSearch}) =>  (
-<div>
+<>
   <label htmlFor = "search">Search: </label>
   <input id= "search" type = "text" value={search} onChange= {onSearch}/>
 
@@ -89,7 +108,7 @@ const Search = ({search, onSearch}) =>  (
     Searching for <strong>{searchTerm}</strong>
   </p> */}
 
-</div>
+</>
 )
 
   // const handleChange = (event) => {
