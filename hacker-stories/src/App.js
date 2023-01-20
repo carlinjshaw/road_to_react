@@ -15,7 +15,7 @@ const useStorageState = (key, initialState) => {
 }
 
 const App = () => {
-  const stories = [
+  const initialStories = [
     {
       title: 'React',
       url: 'https://reactjs.org',
@@ -34,11 +34,17 @@ const App = () => {
     }
   ]
   //A
+  const [stories, setStories] = React.useState(initialStories)
 
 const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
 
   const handleSearch = (event) => {
     setSearchTerm(event.target.value)
+  }
+
+  const handleDelete = (item) => {
+    const newStories = stories.filter((story) => item.objectID !==story.objectID)
+    setStories(newStories);
   }
 
   const searchedStories = stories.filter((story) => 
@@ -61,7 +67,7 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
       {/* <Search search = {searchTerm} onSearch={handleSearch}/> */}
 
       <hr />
-      <List list = {searchedStories}/>
+      <List list = {searchedStories} onRemoveItem ={handleDelete}/>
     </div>
   );
 }
@@ -81,6 +87,7 @@ const InputWithLabel = ({id, label, value, type='text', onInputChange, isFocused
   <>
     <label htmlFor={id}>{children}</label>
     &nbsp;
+    {/* B */}
     <input
       ref = {inputRef}
       id={id}
@@ -92,28 +99,34 @@ const InputWithLabel = ({id, label, value, type='text', onInputChange, isFocused
   </>
 )}
 
-const List = ({list}) => {
+const List = ({list, onRemoveItem}) => {
   
   // const myList = [1,2,3,4]
   return (
     <ul>
-        {list.map(({objectID, ...item}) => {
-          return <Item key = {objectID} {...item}/>
+        {list.map((item) => {
+          return <Item onRemoveItem={onRemoveItem} key = {item.objectID} item ={item}/>
         })}
     </ul>
   )
 }
 
-const Item = ({url,title, author, num_contents, points}) => (
+const Item = ({item, onRemoveItem}) => {
+  const handleRemoveItem = () => {
+    onRemoveItem(item)
+  }
+
+  return (
   <li>
     <span>
-      <a href = {url}> {title}</a>
+      <a href = {item.url}> {item.title}</a>
     </span>
-    <span> {author}</span>
-    <span> {num_contents}</span>
-    <span> {points}</span>
+    <span> {item.author}</span>
+    <span> {item.num_contents}</span>
+    <span> {item.points} </span>
+    <button type="button" onClick={handleRemoveItem}>Remove</button>
   </li>
-)
+)}
 
 const Search = ({search, onSearch}) =>  (
 <>
