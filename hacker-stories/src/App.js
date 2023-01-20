@@ -52,6 +52,7 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
         id="search"
         label="Search"
         value={searchTerm}
+        isFocused
         onInputChange={handleSearch}
       >
         <strong>Search: </strong>
@@ -65,18 +66,31 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
   );
 }
 
-const InputWithLabel = ({id, label, value, type='text', onInputChange, children}) => (
+const InputWithLabel = ({id, label, value, type='text', onInputChange, isFocused, children}) => {
+  //A
+  const inputRef = React.useRef();
+
+  //C
+  React.useEffect(() => {
+    if(isFocused && inputRef.current) {
+      inputRef.current.focus()
+    }
+  }, [isFocused])
+
+ return (
   <>
     <label htmlFor={id}>{children}</label>
     &nbsp;
     <input
+      ref = {inputRef}
       id={id}
       type={type}
       value={value}
+      autoFocus = {isFocused}
       onChange={onInputChange}
     />
   </>
-)
+)}
 
 const List = ({list}) => {
   
