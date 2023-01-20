@@ -53,9 +53,11 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
         label="Search"
         value={searchTerm}
         onInputChange={handleSearch}
-      />
+      >
+        <strong>Search: </strong>
+        </InputWithLabel>
 
-      <Search search = {searchTerm} onSearch={handleSearch}/>
+      {/* <Search search = {searchTerm} onSearch={handleSearch}/> */}
 
       <hr />
       <List list = {searchedStories}/>
@@ -63,9 +65,9 @@ const [searchTerm, setSearchTerm] = useStorageState('search' ,'React')
   );
 }
 
-const InputWithLabel = ({id, label, value, type='text', onInputChange}) => (
+const InputWithLabel = ({id, label, value, type='text', onInputChange, children}) => (
   <>
-    <label htmlFor={id}>{label}</label>
+    <label htmlFor={id}>{children}</label>
     &nbsp;
     <input
       id={id}
