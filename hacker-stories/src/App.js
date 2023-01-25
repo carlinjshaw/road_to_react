@@ -15,24 +15,7 @@ const useStorageState = (key, initialState) => {
   return [value, setValue];
 };
 
-// const initialStories = [
-//   {
-//     title: "React",
-//     url: "https://reactjs.org",
-//     author: "Jordan Walke",
-//     num_comments: 3,
-//     points: 4,
-//     objectID: 0,
-//   },
-//   {
-//     title: "Redux",
-//     url: "https://redux.js.org/",
-//     author: "Dan Abramov, Andrew Clark",
-//     num_comments: 2,
-//     points: 5,
-//     objectID: 1,
-//   },
-// ];
+
 
 const storiesReducer = (state, action) => {
   switch (action.type) {
@@ -78,10 +61,13 @@ const App = () => {
     {data: [], isLoading: false, isError: false}
     );
 
-    React.useEffect(() => {
+    const handleFetchStories = React.useCallback(() => {
+
+      if(!searchTerm) return;
+
       dispatchStories({type: 'STORIES_FETCH_INIT'})
   
-      fetch(`${API_ENDPOINT}react`)//B
+      fetch(`${API_ENDPOINT}${searchTerm}`)//B
         .then((response) => response.json()) //C
         .then((result) => {
         dispatchStories({
@@ -91,8 +77,11 @@ const App = () => {
       })
       .catch(()=> dispatchStories({type: 'STORIES_FETCH_FAILURE'})
       )
-    }, []);
+    }, [searchTerm]);
 
+    React.useEffect(() => {
+      handleFetchStories();
+    }, [handleFetchStories]);
     
   const handleDelete = (item) => {
     dispatchStories({
@@ -104,18 +93,6 @@ const App = () => {
   const handleSearch = (event) => {
     setSearchTerm(event.target.value);
   };
-
-  // const getAsyncStories = () =>
-  //   new Promise((resolve, reject) => setTimeout(reject, 2000));
-
-  // const [isLoading, setIsLoading] = React.useState(false)
-  // const [isError, setIsError] = React.useState(false)
-
-  // const [searchTerm, setSearchTerm] = useStorageState("React");
-
-  const searchedStories = stories.data.filter((story) =>
-    story.title.toLowerCase().includes(searchTerm.toLowerCase())
-  );
 
   return (
     <div>
@@ -138,7 +115,7 @@ const App = () => {
       {stories.isLoading ? (
           <p>Loading ...</p>
       ) : (
-        <List list={searchedStories} onRemoveItem={handleDelete} />
+        <List list={stories.data} onRemoveItem={handleDelete} />
       )}
 
     </div>
